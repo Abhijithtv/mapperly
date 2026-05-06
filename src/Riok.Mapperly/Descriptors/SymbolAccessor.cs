@@ -146,6 +146,30 @@ public class SymbolAccessor(CompilationContext compilationContext, INamedTypeSym
 
     public MethodParameter WrapMethodParameter(IParameterSymbol symbol) => new(symbol, UpgradeNullable(symbol.Type));
 
+    public ITypeSymbol UpgradeReturnNullable(IMethodSymbol methodSymbol)
+    {
+        TryUpgradeReturnNullable(methodSymbol, out var upgradedReturnSymbol);
+        return upgradedReturnSymbol ?? methodSymbol.ReturnType;
+    }
+
+    private bool TryUpgradeReturnNullable(IMethodSymbol methodSymbol, [NotNullWhen(true)] out ITypeSymbol? upgradedReturnSymbol)
+    {
+        upgradedReturnSymbol = default;
+
+        if (methodSymbol.ReturnsVoid || methodSymbol.ReturnType.IsValueType)
+        {
+            return false;
+        }
+
+        if (!TryHasAttribute<MaybeNullAttribute>(methodSymbol.GetReturnTypeAttributes()))
+        {
+            return false;
+        }
+
+        upgradedReturnSymbol = methodSymbol.ReturnType.WithNullableAnnotation(NullableAnnotation.Annotated);
+        return true;
+    }
+
     /// <summary>
     /// Upgrade the nullability of a symbol from <see cref="NullableAnnotation.None"/> to <see cref="NullableAnnotation.Annotated"/>.
     /// Value types are not upgraded.

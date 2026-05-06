@@ -36,6 +36,10 @@ public class NonEmptyMemberPath : MemberPath
 
     public MemberPathSetter BuildSetter(SimpleMappingBuilderContext ctx) => MemberPathSetter.Build(ctx, this);
 
+    public override bool IsAnyReadNullable() => Path.Any(x => x.IsReadNullable);
+
+    public override bool IsWriteNullable() => Path[^1].IsWriteNullable;
+
     public override string ToDisplayString(bool includeRootType = true, bool includeMemberType = true)
     {
         var ofType = includeMemberType ? $" of type {Member.Type.ToDisplayString()}" : null;

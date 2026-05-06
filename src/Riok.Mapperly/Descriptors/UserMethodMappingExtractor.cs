@@ -267,12 +267,8 @@ public static class UserMethodMappingExtractor
         string sourceParameterName
     )
     {
-        var targetType = ctx.SymbolAccessor.UpgradeNullable(method.ReturnType);
-
-        if (ctx.SymbolAccessor.TryHasAttribute<MaybeNullAttribute>(method.GetReturnTypeAttributes()))
-        {
-            targetType = targetType.WithNullableAnnotation(NullableAnnotation.Annotated);
-        }
+        var effectiveReturnType = ctx.SymbolAccessor.UpgradeReturnNullable(method);
+        var targetType = ctx.SymbolAccessor.UpgradeNullable(effectiveReturnType);
 
         if (!targetType.IsNullable() || ctx.SymbolAccessor.TryHasAttribute<NotNullAttribute>(method.GetReturnTypeAttributes()))
         {

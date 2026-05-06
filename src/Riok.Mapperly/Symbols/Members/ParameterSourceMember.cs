@@ -20,9 +20,9 @@ public class ParameterSourceMember(MethodParameter parameter, SymbolAccessor sym
     public ITypeSymbol Type => parameter.Type;
     public INamedTypeSymbol? ContainingType => null;
     public bool IsReadNullable =>
-        parameter.symbol is not null ? symbolAccessor.IsReadNullable(parameter.symbol) : parameter.Type.IsNullable();
+        parameter.Symbol is not null ? symbolAccessor.IsReadNullable(parameter.Symbol) : parameter.Type.IsNullable();
     public bool IsWriteNullable =>
-        parameter.symbol is not null ? symbolAccessor.IsWriteNullable(parameter.symbol) : parameter.Type.IsNullable();
+        parameter.Symbol is not null ? symbolAccessor.IsWriteNullable(parameter.Symbol) : parameter.Type.IsNullable();
     public bool CanGet => true;
     public bool CanGetDirectly => true;
     public bool CanSet => false;

@@ -7,7 +7,7 @@ public readonly record struct MethodParameter(
     int Ordinal,
     string Name,
     ITypeSymbol Type,
-    IParameterSymbol? symbol = null,
+    IParameterSymbol? Symbol = null,
     RefKind RefKind = RefKind.None
 )
 {

@@ -12,6 +12,10 @@ public class EmptyMemberPath(ITypeSymbol rootType) : MemberPath(rootType, [])
 
     public override ITypeSymbol MemberWriteType => RootType;
 
+    public override bool IsAnyReadNullable() => false;
+
+    public override bool IsWriteNullable() => false;
+
     public override string ToDisplayString(bool includeRootType = true, bool includeMemberType = true) =>
         includeRootType ? RootType.ToDisplayString() : string.Empty;
 }

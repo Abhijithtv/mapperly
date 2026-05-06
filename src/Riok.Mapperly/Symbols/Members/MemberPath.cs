@@ -70,9 +70,9 @@ public abstract class MemberPath(ITypeSymbol rootType, IReadOnlyList<IMappableMe
         }
     }
 
-    public bool IsAnyReadNullable() => Path.Any(x => x.IsReadNullable);
+    public abstract bool IsAnyReadNullable();
 
-    public bool IsWriteNullable() => Path[^1].IsWriteNullable;
+    public abstract bool IsWriteNullable();
 
     public bool IsAnyObjectReadPathNullable() => ObjectPath.Any(p => p.IsReadNullable);
 

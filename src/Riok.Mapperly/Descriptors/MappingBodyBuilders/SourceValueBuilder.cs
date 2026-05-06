@@ -201,7 +201,7 @@ internal static class SourceValueBuilder
             ctx.BuilderContext.ReportDiagnostic(
                 DiagnosticDescriptors.MapValueMethodTypeMismatch,
                 methodReferenceConfiguration.Name,
-                FormattedReturnType(namedMethodCandidates[0]),
+                ctx.BuilderContext.SymbolAccessor.UpgradeReturnNullable(namedMethodCandidates[0]).ToDisplayString(),
                 memberMappingInfo.TargetMember.ToDisplayString()
             );
             sourceValue = null;
@@ -218,18 +218,5 @@ internal static class SourceValueBuilder
             additionalParameterNames
         );
         return true;
-    }
-
-    private static string FormattedReturnType(IMethodSymbol methodSymbol)
-    {
-        bool hasNullableAttribute = methodSymbol
-            .GetReturnTypeAttributes()
-            .Any(a => string.Equals(a.AttributeClass?.Name, nameof(MaybeNullAttribute)));
-
-        var effectiveType = hasNullableAttribute
-            ? methodSymbol.ReturnType.WithNullableAnnotation(NullableAnnotation.Annotated)
-            : methodSymbol.ReturnType;
-
-        return effectiveType.ToDisplayString();
     }
 }
