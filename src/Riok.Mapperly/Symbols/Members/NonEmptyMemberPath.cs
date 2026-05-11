@@ -13,6 +13,7 @@ public class NonEmptyMemberPath : MemberPath
     }
 
     private ITypeSymbol? _memberReadType;
+
     private ITypeSymbol? _memberWriteType;
 
     /// <summary>
